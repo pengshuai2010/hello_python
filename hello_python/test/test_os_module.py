@@ -5,7 +5,6 @@ Created on Jul 22, 2015
 '''
 import os
 import glob
-import re
 
 if __name__ == '__main__':
     print os.getcwd()
