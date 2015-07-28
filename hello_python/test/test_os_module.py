@@ -5,6 +5,7 @@ Created on Jul 22, 2015
 '''
 import os
 import glob
+import re
 
 if __name__ == '__main__':
     print os.getcwd()
@@ -12,3 +13,5 @@ if __name__ == '__main__':
     path = os.path.join(homedir, 'java_programs/*.java')
     print [(os.path.split(f)[1], os.stat(f).st_size) for f in glob.glob(path)]
     print {os.path.split(f)[1]: os.stat(f).st_size for f in glob.glob(path)}
+
+    
