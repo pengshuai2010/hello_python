@@ -5,6 +5,7 @@ Created on Jul 30, 2015
 '''
 import re
 
+
 def build_match_apply_rules(pat, search, replace):
     def match_rule(word):
         return re.search(pat, word)
@@ -24,25 +25,26 @@ class Lazy_rules:
         self.file_obj = open(self.rule_file)
     
     def __iter__(self):
-        self.cache_index = 0
+        self.cache_index = -1
         return self
     
     def next(self):
         self.cache_index += 1
-        if self.cache_index > len(self.cache):
+        if self.cache_index >= len(self.cache):
             if self.file_obj.closed:
                 raise StopIteration()
             line = self.file_obj.readline()
-            if line:
-                pattern, search, replace = line.split(None, 3)
-                self.cache.append(build_match_apply_rules(pattern, search, replace))
-                return self.cache[self.cache_index - 1]
-            self.file_obj.close()
-            raise StopIteration()
-        return self.cache[self.cache_index - 1]
+            if not line:
+                self.file_obj.close()
+                raise StopIteration()
+            pattern, search, replace = line.split(None, 3)
+            self.cache.append(build_match_apply_rules(pattern, search, replace))
+        return self.cache[self.cache_index]
+
+rules = Lazy_rules()
 
 def pluralize(noun):
-    for match_rule, apply_rule in Lazy_rules():
+    for match_rule, apply_rule in rules:
         if match_rule(noun):
             return apply_rule(noun)
     raise ValueError("no rule for {}".format(noun))
