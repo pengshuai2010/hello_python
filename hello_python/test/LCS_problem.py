@@ -22,8 +22,24 @@ def solve_LCS(x, y):
             else:
                 c[i][j] = c[i][j - 1]
     return c
+
+def construct_LCS(c, m, n, x ,y):
+    i, j = m, n
+    LCS = []
+    while c[i][j] != 0:
+        if x[i] == y[j]:
+            LCS.append(x[i])
+            i, j = i - 1, j - 1
+        elif c[i - 1][j] == c[i][j]:
+            i = i - 1
+        else:
+            j = j - 1
+    LCS.reverse()
+    return LCS
+
 if __name__ == '__main__':
     x = [None, 1, 0, 0, 1, 0, 1, 0, 1]
     y = [None, 0, 1, 0, 1, 1, 0, 1, 1, 0]
     c = solve_LCS(x, y)
     print_2D_array(c)
+    print construct_LCS(c, len(x) - 1, len(y) - 1, x ,y)
