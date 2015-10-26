@@ -46,8 +46,8 @@ def construct_BST(table, start, end):
 def print_tree(root_node):
     if root_node == None:
         return
-    print_tree(root_node.left)
     print root_node.data
+    print_tree(root_node.left)
     print_tree(root_node.right)
 
 if __name__ == '__main__':
