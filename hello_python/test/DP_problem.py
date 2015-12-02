@@ -30,7 +30,7 @@ def dp_programming(p, q, n):
     return e, w, root
 
 def print_2D_array(A):
-    print ('\n'.join([''.join(['{:16}'.format(item) for item in row]) 
+    print ('\n'.join([','.join(['{:16}'.format(item) for item in row]) 
                   for row in A]))
 
 def construct_BST(table, start, end):
