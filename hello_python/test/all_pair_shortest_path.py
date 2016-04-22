@@ -37,7 +37,7 @@ if __name__ == '__main__':
 #          [float("inf"), float("inf"), float("inf"), -8, 0]]
     W = [[0,            2.7,            3.1,            float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf")],
          [2.7,          0,              1,              float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf")],
-         [3.1,          1,              0,              2.3,            float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf")],
+         [3.1,          1,              0,              2.3,            float("inf"),   2.6,            float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf")],
          [float("inf"), float("inf"),   2.3,            0,              0.95,           float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf"),   float("inf")],
          [float("inf"), float("inf"),   float("inf"),   0.95,           0,              1.7,            1.3,            float("inf"),   float("inf"),   float("inf"),   float("inf")],
          [float("inf"), float("inf"),   2.6,            float("inf"),   1.7,            0,              0.1,            float("inf"),   float("inf"),   float("inf"),   float("inf")],
