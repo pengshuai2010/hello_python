@@ -60,11 +60,6 @@ def insert_appointment(appointment):
         "INSERT INTO Appointment (MedicalOfficeId, Doctor_Id, PatientID, `Body Temperature`, Weight, Height, `Appointment Date`, `Appointment Time`) "
         "VALUES (%(MedicalOfficeId)s, %(Doctor_Id)s, %(PatientID)s, %(Body Temperature)s, %(Weight)s, %(Height)s, %(Appointment Date)s, %(Appointment Time)s)")
     cursor.execute(query, appointment)
-    # query = (
-    #     "INSERT INTO Appointment (MedicalOfficeId, Doctor_Id, PatientID, `Body Temperature`, Weight, Height, `Appointment Date`, `Appointment Time`) "
-    #     "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
-    # tmp = (appointment['MedicalOfficeId'], appointment['Doctor_Id'], appointment['PatientID'], appointment['Body Temperature'], appointment['Weight'], appointment['Height'], appointment['Appointment Date'], appointment['Appointment Time'])
-    # cursor.execute(query, tmp)
     appointment['Appointment_Id'] = cursor.lastrowid
     cnx.commit()
     cursor.close()
@@ -74,7 +69,8 @@ def insert_appointment(appointment):
 def next_weekday(d, weekday):
     ''' usage: d = datetime.date(2011, 7, 2)
     next_monday = next_weekday(d, 0) # 0 = Monday, 1=Tuesday, 2=Wednesday...
-    print(next_monday)'''
+    print(next_monday)
+    this piece of code is taken from stack overflow'''
     days_ahead = weekday - d.weekday()
     if days_ahead <= 0:  # Target day already happened this week
         days_ahead += 7
