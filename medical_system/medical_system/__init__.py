@@ -18,18 +18,19 @@ if __name__ == '__main__':
                        3: 'Display the schedule of appointments for a doctor for a day at a medical office',
                        4: 'Display a patient summary, showing appointments for a period of time, diagnoses, and prescriptions',
                        5: 'Display the prescription count, by medication, by doctor for a period of time.'}
+
+    print 'welcome to medical system'
+    print '=' * 20
+    print 'choose a function to perform'
+    pp = pprint.PrettyPrinter(indent=4)
+    print_dict_list([func_select_dic])
+    selected = None
     while True:
-        print '=' * 20
-        print 'choose a function to perform'
-        pp = pprint.PrettyPrinter(indent=4)
-        print_dict_list([func_select_dic])
-        selected = None
-        while True:
-            try:
-                selection = int(raw_input('please select an option by index number:   '))
-                if selection < 0:
-                    raise Exception('selection must be positive')
-                func_list[selection]()
-                break
-            except Exception as e:
-                print e.message
+        try:
+            selection = int(raw_input('please select an option by index number:   '))
+            if selection < 0:
+                raise Exception('selection must be positive')
+            func_list[selection]()
+            break
+        except Exception as e:
+            print e.message

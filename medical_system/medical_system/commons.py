@@ -15,6 +15,7 @@ def make_a_selection(options):
             break
         except Exception as e:
             print e.message
+    print ' '
     return selected
 
 
@@ -23,7 +24,7 @@ def print_dict_list(dict_list):
     for counter, option in enumerate(dict_list):
         print 'index number ', counter
         pp.pprint(convert_dict(option))
-
+    print ' '
 
 def convert_dict(dictonary):
     new_dict = {}

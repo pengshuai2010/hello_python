@@ -136,8 +136,4 @@ def display_prescription_account():
     cursor.close()
     cnx.close()
     # display schedule list
-    print ' '.join(['prescription_count', 'medication_ISDN', 'medication_name', 'doctor_ID', 'doctor_name'])
-    for counter, prescription_count_info in enumerate(prescription_count_info_list):
-        print prescription_count_info['prescription_count'], prescription_count_info['ISDN'], \
-            prescription_count_info['Medication_Name'], prescription_count_info['Doctor_Id'], \
-            prescription_count_info['doctor_fname'], prescription_count_info['doctor_lname']
+    print_dict_list(prescription_count_info_list)
