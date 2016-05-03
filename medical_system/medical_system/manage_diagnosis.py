@@ -1,7 +1,7 @@
 from medical_system.commons import get_connection
 from medical_system.display_info import print_dict_list
 from medical_system.manage_appointment import make_a_selection
-from medical_system.manage_patient import select_a_pharmacy
+from medical_system.manage_patient import get_pharmacy_list
 
 
 def add_appointment_result():
@@ -20,9 +20,7 @@ def create_prescription(diagnosis):
     prescription = {'Diagnosis_Id': diagnosis['Diagnosis_Id']}
     # choose medication
     print 'which medication?'
-    medication_list = get_medication_list()
-    medication = make_a_selection(medication_list)
-    prescription['ISDN'] = medication['ISDN']
+    prescription['ISDN'] = make_a_selection(get_medication_list())['ISDN']
     while True:
         try:
             quantity_str = raw_input('quantity of the medication(integer):   ')
@@ -38,7 +36,7 @@ def create_prescription(diagnosis):
         except ValueError as e:
             print e.message
     prescription['Frequency'] = raw_input('frequency of the medication:   ')
-    prescription['Pharmacy_Id'] = select_a_pharmacy()['Pharmacy_Id']
+    prescription['Pharmacy_Id'] = make_a_selection(get_pharmacy_list())['Pharmacy_Id']
     return prescription
 
 

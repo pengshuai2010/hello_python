@@ -1,1 +1,10 @@
-export PYTHONPATH='.'
+# how to run
+1. download and install Python if you don't already have it
+2. download MySQL Connector/Python  from https://dev.mysql.com/downloads/connector/python/
+3. install MySQL Connector/Python
+4. in this folder, run the command: export PYTHONPATH='.'
+5. set up SSH forwarding, run the command: ssh -L 3306:localhost:4959 onyx.boisestate.edu
+6. in this folder, run the program: python medical_system/__init__.py
+
+
+

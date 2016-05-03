@@ -1,8 +1,8 @@
 import calendar
 import datetime
 
-from medical_system.commons import make_a_selection, get_connection
-from medical_system.manage_patient import select_a_doctor
+from medical_system.commons import make_a_selection, get_connection, print_dict_list
+from medical_system.manage_patient import get_doctor_list
 
 
 def make_appointment():
@@ -12,9 +12,12 @@ def make_appointment():
     print 'who is the patient?'
     patient = select_a_patient()
     print 'which doctor do you want to schedule an appointment with?'
-    doctor = select_a_doctor()
+    doctor = make_a_selection(get_doctor_list())
     selected_availability = select_a_timeslot(doctor)
     appointment = create_appointment(patient, selected_availability)
+    print 'congrats! you made an appointment.'
+    print 'appointment details:'
+    print_dict_list([appointment])
     insert_appointment(appointment)
 
 
@@ -23,11 +26,26 @@ def create_appointment(patient, availability):
     appointment['MedicalOfficeId'] = availability['MedicalOfficeId']
     appointment['Doctor_Id'] = availability['Doctor_Id']
     appointment['PatientID'] = patient['Person_Id']
-    body_temperature = float(raw_input("patient's body temperature is(Celsius):   "))
+    while True:
+        try:
+            body_temperature = float(raw_input("patient's body temperature is(Celsius):   "))
+            break
+        except ValueError as e:
+            print e.message
     appointment['Body Temperature'] = body_temperature
-    weight = float(raw_input("patient's weight is(kg):   "))
+    while True:
+        try:
+            weight = float(raw_input("patient's weight is(kg):   "))
+            break
+        except ValueError as e:
+            print e.message
     appointment['Weight'] = weight
-    height = float(raw_input("patient's height is(meter):   "))
+    while True:
+        try:
+            height = float(raw_input("patient's height is(meter):   "))
+            break
+        except ValueError as e:
+            print e.message
     appointment['Height'] = height
     appointment['Appointment Time'] = availability['From_Time']
     appointment['Appointment Date'] = next_weekday(datetime.date.today(),
@@ -106,12 +124,8 @@ def select_a_timeslot(doctor):
     cursor.close()
     cnx.close()
     # select a time slot
-    print 'a list of availability time slot'
-    for counter, availability in enumerate(availability_list):
-        print 'index number ', counter, availability
-    selection = int(raw_input('please select a time slot by index number:   '))
-    selected_availability = availability_list[selection]
-    print 'selected availability', selected_availability
+    print 'when do you want to see the doctor?'
+    selected_availability = make_a_selection(availability_list)
     # delete the selected availabitlity
     cnx = get_connection()
     cursor = cnx.cursor()
