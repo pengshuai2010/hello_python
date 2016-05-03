@@ -1,13 +1,13 @@
 import calendar
 import datetime
 
-from medical_system.database import get_connection
+from medical_system.commons import make_a_selection, get_connection
 from medical_system.manage_patient import select_a_doctor
 
 
 def make_appointment():
-    # TODO identify patient; choose doctor; show availability; choose availability; remove from doctor's availability; create appointment;
-    # TODO insert appointment
+    #  identify patient; choose doctor; show availability; choose availability; remove from doctor's availability; create appointment;
+    #  insert appointment
     # identify patient
     print 'who is the patient?'
     patient = select_a_patient()
@@ -66,10 +66,8 @@ def next_weekday(d, weekday):
 def select_a_patient():
     ''':returns patient '''
     patient_list = get_patient_list()
-    for counter, patient in enumerate(patient_list):
-        print 'index number ', counter, patient
-    selection = int(raw_input('please select a patient by index number:   '))
-    return patient_list[selection]
+    return make_a_selection(patient_list)
+
 
 
 def get_patient_list():

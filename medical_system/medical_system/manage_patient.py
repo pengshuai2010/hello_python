@@ -1,6 +1,7 @@
 import datetime
 
-from medical_system.database import get_connection
+from medical_system.commons import get_connection
+from medical_system.manage_appointment import make_a_selection
 
 
 def add_new_patient():
@@ -15,12 +16,7 @@ def add_new_patient():
 
 def create_pharmacy_designation(person_id):
     pharmacy_designation = {}
-    pharmacy_list = get_pharmacy_list()
-    for counter, pharmacy in enumerate(pharmacy_list):
-        print "index number", counter, pharmacy
-    selection = int(raw_input('please select a pharmacy by index number:   '))
-    selected_pharmacy = pharmacy_list[selection]
-    pharmacy_designation['Pharmacy_Id'] = selected_pharmacy['Pharmacy_Id']
+    pharmacy_designation['Pharmacy_Id'] = select_a_pharmacy()['Pharmacy_Id']
     pharmacy_designation['Patient_Id'] = person_id
     return pharmacy_designation
 
@@ -161,3 +157,9 @@ def get_pharmacy_list():
     cursor.close()
     cnx.close()
     return pharmacy_list
+
+
+def select_a_pharmacy():
+    pharmacy_list = get_pharmacy_list()
+    print 'which pharmacy?'
+    return make_a_selection(pharmacy_list)
