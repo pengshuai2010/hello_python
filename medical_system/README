@@ -1,1 +1,15 @@
-export PYTHONPATH='.'
+# how to set up and run
+1. download and install Python if you don't already have it
+2. download MySQL Connector/Python  from https://dev.mysql.com/downloads/connector/python/
+3. install MySQL Connector/Python
+4. in this folder, run the command: export PYTHONPATH='.'
+5. set up SSH forwarding, run the command: ssh -L 3306:localhost:4959 onyx.boisestate.edu
+6. in this folder, run the program: python medical_system/__init__.py
+
+# tests
+For the simplicity of testing, the program is one-shot. That means you can prepare test inputs in a text file and feed it to the program.
+There some sample tests in the folder 'tests'. Run thos tests by redirecting stdin. For example:
+python medical_system/__init__.py < tests/display_patients_summaries.txt
+
+# known issues
+When input the start date and end date of insurance coverage, the program doesn't check that the end date is after the start date.

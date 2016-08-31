@@ -1,6 +1,7 @@
 import datetime
 
-from medical_system.database import get_connection
+from medical_system.commons import get_connection, print_dict_list
+from medical_system.manage_appointment import make_a_selection
 
 
 def add_new_patient():
@@ -15,30 +16,34 @@ def add_new_patient():
 
 def create_pharmacy_designation(person_id):
     pharmacy_designation = {}
-    pharmacy_list = get_pharmacy_list()
-    for counter, pharmacy in enumerate(pharmacy_list):
-        print "index number", counter, pharmacy
-    selection = int(raw_input('please select a pharmacy by index number:   '))
-    selected_pharmacy = pharmacy_list[selection]
-    pharmacy_designation['Pharmacy_Id'] = selected_pharmacy['Pharmacy_Id']
+    print 'which pharmacy?'
+    pharmacy_designation['Pharmacy_Id'] = make_a_selection(get_pharmacy_list())['Pharmacy_Id']
     pharmacy_designation['Patient_Id'] = person_id
     return pharmacy_designation
 
 
 def create_insurance_coverage(person_id):
     insurance_coverage = {}
-    date_str = raw_input('please input start date of insurance coverage(yyyy/mm/dd): ')
-    insurance_coverage['Coverage_Start_Date'] = datetime.datetime.strptime(date_str, '%Y/%m/%d').date()
-    date_str = raw_input('please input end date of insurance coverage(yyyy/mm/dd): ')
-    insurance_coverage['Coverage_End_date'] = datetime.datetime.strptime(date_str, '%Y/%m/%d').date()
+    while True:
+        try:
+            date_str = raw_input('please input start date of insurance coverage(yyyy/mm/dd): ')
+            insurance_coverage['Coverage_Start_Date'] = datetime.datetime.strptime(date_str, '%Y/%m/%d').date()
+            break
+        except ValueError as e:
+            print e.message
+    while True:
+        try:
+            date_str = raw_input('please input end date of insurance coverage(yyyy/mm/dd): ')
+            insurance_coverage['Coverage_End_date'] = datetime.datetime.strptime(date_str, '%Y/%m/%d').date()
+            break
+        except ValueError as e:
+            print e.message
     # select insurer
-    insurer_list = get_insurer_list()
-    for counter, insurer in enumerate(insurer_list):
-        print "index number", counter, insurer
-    selection = int(raw_input('please select a insurer as by index number:   '))
-    selected_insurer = insurer_list[selection]
-    insurance_coverage['Insurer_Id'] = selected_insurer['Insurer_Id']
+    print 'which inserer?'
+    insurance_coverage['Insurer_Id'] = make_a_selection(get_insurer_list())['Insurer_Id']
     insurance_coverage['Person_Id'] = person_id
+    print 'a summary of insurance coverage'
+    print_dict_list([insurance_coverage])
     return insurance_coverage
 
 
@@ -96,25 +101,49 @@ def insert_person(person):
 def create_person():
     # get basic info
     person = {}
-    person['First_Name'] = raw_input('please input first name: ')
-    person['Last_Name'] = raw_input('please input last name: ')
-    date_of_birth_str = raw_input('please input date of birth(yyyy/mm/dd): ')
-    person['Date_Of_Birth'] = datetime.datetime.strptime(date_of_birth_str, '%Y/%m/%d').date()
-    person['Deceased'] = raw_input('is this person deceased?(Y/N) ')
-    print person['First_Name'], person['Last_Name'], person['Date_Of_Birth'], person['Deceased']
+    while True:
+        try:
+            fname = raw_input('please input first name: ')
+            if fname == '':
+                raise Exception('first name cannot be empty')
+            person['First_Name'] = fname
+            break
+        except Exception as e:
+            print e.message
+    while True:
+        try:
+            lname = raw_input('please input last name: ')
+            if lname == '':
+                raise Exception('last name cannot be empty')
+            person['Last_Name'] = lname
+            break
+        except Exception as e:
+            print e.message
+    while True:
+        try:
+            date_of_birth_str = raw_input('please input date of birth(yyyy/mm/dd): ')
+            person['Date_Of_Birth'] = datetime.datetime.strptime(date_of_birth_str, '%Y/%m/%d').date()
+            break
+        except ValueError as e:
+            print e.message
+    while True:
+        try:
+            deceased = raw_input('is this person deceased?(Y/N) ')
+            deceased = deceased.upper()
+            if deceased != 'Y' and deceased != 'N':
+                raise Exception('please input Y or N')
+            person['Deceased'] = deceased
+            break
+        except Exception as e:
+            print e.message
+
     # select primary physician
-    print 'select a primary physician.'
-    person['Primary_Physician'] = select_a_doctor()['Doctor_Id']
+    print 'select a primary physician for this person'
+    person['Primary_Physician'] = make_a_selection(get_doctor_list())['Doctor_Id']
+    # print person['First_Name'], person['Last_Name'], person['Date_Of_Birth'], person['Deceased']
+    print 'a summary of this person:'
+    print_dict_list([person])
     return person
-
-
-def select_a_doctor():
-    ''':returns doctor '''
-    doctor_list = get_doctor_list()
-    for counter, doctor in enumerate(doctor_list):
-        print 'index number ', counter, doctor
-    selection = int(raw_input('please select a doctor by index number:   '))
-    return doctor_list[selection]
 
 
 def get_doctor_list():
@@ -161,3 +190,4 @@ def get_pharmacy_list():
     cursor.close()
     cnx.close()
     return pharmacy_list
+

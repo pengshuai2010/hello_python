@@ -1,20 +1,23 @@
 import calendar
 import datetime
 
-from medical_system.database import get_connection
-from medical_system.manage_patient import select_a_doctor
+from medical_system.commons import make_a_selection, get_connection, print_dict_list
+from medical_system.manage_patient import get_doctor_list
 
 
 def make_appointment():
-    # TODO identify patient; choose doctor; show availability; choose availability; remove from doctor's availability; create appointment;
-    # TODO insert appointment
+    #  identify patient; choose doctor; show availability; choose availability; remove from doctor's availability; create appointment;
+    #  insert appointment
     # identify patient
     print 'who is the patient?'
     patient = select_a_patient()
     print 'which doctor do you want to schedule an appointment with?'
-    doctor = select_a_doctor()
+    doctor = make_a_selection(get_doctor_list())
     selected_availability = select_a_timeslot(doctor)
     appointment = create_appointment(patient, selected_availability)
+    print 'congrats! you made an appointment.'
+    print 'appointment details:'
+    print_dict_list([appointment])
     insert_appointment(appointment)
 
 
@@ -23,11 +26,26 @@ def create_appointment(patient, availability):
     appointment['MedicalOfficeId'] = availability['MedicalOfficeId']
     appointment['Doctor_Id'] = availability['Doctor_Id']
     appointment['PatientID'] = patient['Person_Id']
-    body_temperature = float(raw_input("patient's body temperature is(Celsius):   "))
+    while True:
+        try:
+            body_temperature = float(raw_input("patient's body temperature is(Celsius):   "))
+            break
+        except ValueError as e:
+            print e.message
     appointment['Body Temperature'] = body_temperature
-    weight = float(raw_input("patient's weight is(kg):   "))
+    while True:
+        try:
+            weight = float(raw_input("patient's weight is(kg):   "))
+            break
+        except ValueError as e:
+            print e.message
     appointment['Weight'] = weight
-    height = float(raw_input("patient's height is(meter):   "))
+    while True:
+        try:
+            height = float(raw_input("patient's height is(meter):   "))
+            break
+        except ValueError as e:
+            print e.message
     appointment['Height'] = height
     appointment['Appointment Time'] = availability['From_Time']
     appointment['Appointment Date'] = next_weekday(datetime.date.today(),
@@ -42,11 +60,6 @@ def insert_appointment(appointment):
         "INSERT INTO Appointment (MedicalOfficeId, Doctor_Id, PatientID, `Body Temperature`, Weight, Height, `Appointment Date`, `Appointment Time`) "
         "VALUES (%(MedicalOfficeId)s, %(Doctor_Id)s, %(PatientID)s, %(Body Temperature)s, %(Weight)s, %(Height)s, %(Appointment Date)s, %(Appointment Time)s)")
     cursor.execute(query, appointment)
-    # query = (
-    #     "INSERT INTO Appointment (MedicalOfficeId, Doctor_Id, PatientID, `Body Temperature`, Weight, Height, `Appointment Date`, `Appointment Time`) "
-    #     "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
-    # tmp = (appointment['MedicalOfficeId'], appointment['Doctor_Id'], appointment['PatientID'], appointment['Body Temperature'], appointment['Weight'], appointment['Height'], appointment['Appointment Date'], appointment['Appointment Time'])
-    # cursor.execute(query, tmp)
     appointment['Appointment_Id'] = cursor.lastrowid
     cnx.commit()
     cursor.close()
@@ -56,7 +69,8 @@ def insert_appointment(appointment):
 def next_weekday(d, weekday):
     ''' usage: d = datetime.date(2011, 7, 2)
     next_monday = next_weekday(d, 0) # 0 = Monday, 1=Tuesday, 2=Wednesday...
-    print(next_monday)'''
+    print(next_monday)
+    this piece of code is taken from stack overflow'''
     days_ahead = weekday - d.weekday()
     if days_ahead <= 0:  # Target day already happened this week
         days_ahead += 7
@@ -66,10 +80,8 @@ def next_weekday(d, weekday):
 def select_a_patient():
     ''':returns patient '''
     patient_list = get_patient_list()
-    for counter, patient in enumerate(patient_list):
-        print 'index number ', counter, patient
-    selection = int(raw_input('please select a patient by index number:   '))
-    return patient_list[selection]
+    return make_a_selection(patient_list)
+
 
 
 def get_patient_list():
@@ -108,12 +120,8 @@ def select_a_timeslot(doctor):
     cursor.close()
     cnx.close()
     # select a time slot
-    print 'a list of availability time slot'
-    for counter, availability in enumerate(availability_list):
-        print 'index number ', counter, availability
-    selection = int(raw_input('please select a time slot by index number:   '))
-    selected_availability = availability_list[selection]
-    print 'selected availability', selected_availability
+    print 'when do you want to see the doctor?'
+    selected_availability = make_a_selection(availability_list)
     # delete the selected availabitlity
     cnx = get_connection()
     cursor = cnx.cursor()
