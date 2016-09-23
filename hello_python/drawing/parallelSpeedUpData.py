@@ -29,11 +29,6 @@ plt.title('speedup')
 
 plt.figure(3)
 for key in time.keys():
-    print [time[key][0] / (time[key][i] * threads[i]) for i in range(len(time[key]))]
-    for i in range(len(time[key])):
-        print time[key][0]
-        print time[key][i]
-        print threads[i]
     plt.plot(threads, [time[key][0] / (time[key][i] * threads[i]) for i in range(len(time[key]))], label=key)
 plt.xlabel('processes')
 plt.ylabel('efficiency')
