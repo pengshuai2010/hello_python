@@ -2,16 +2,16 @@ import matplotlib.pyplot as plt
 
 ax = plt.subplot(111)
 
-threads = [1, 2, 4, 8, 16, 20, 24]
-time = {"K1-N16-Inter": [11.9295, 6.4122, 3.1489, 1.697, 0.8873, 0.7202, 0.6016],
-        "K7-N16-Inter": [10.1198, 5.1759, 2.6679, 1.4201, 0.7334, 0.5927, 0.5009],
-        "K1-N128-Inter": [10.4002, 6.5947, 4.9964, 3.7421, 3.7764, 3.7123, 4.8355],
-        "K19-N128-Inter": [10.7097, 5.5312, 2.8784, 1.615, 0.8483, 0.6911, 0.5846]}
+threads = [1, 2, 4, 8, 16, 32]
+time = {"n=1000000000": [15.55, 7.82, 4.31, 2.21, 1.13, 0.6],
+        "n=2000000000": [31.09, 15.57, 8.71, 4.34, 2.19, 1.16],
+        "n=4000000000": [62.28, 31.11, 17.22, 8.62, 4.3, 2.23],
+        "n=8000000000": [124.3, 62.18, 34.41, 17.12, 8.58, 4.49]}
 
 plt.figure(1)
 for key in time.keys():
     plt.loglog(threads, time[key], label=key)
-plt.xlabel('threads')
+plt.xlabel('processes')
 plt.ylabel('seconds')
 plt.grid(True)
 plt.legend()
@@ -20,11 +20,26 @@ plt.title('execution time')
 plt.figure(2)
 for key in time.keys():
     plt.plot(threads, [time[key][0] / t for t in time[key]], label=key)
-plt.xlabel('threads')
+plt.xlabel('processes')
 plt.ylabel('speedup')
 plt.grid(True)
 plt.legend(bbox_to_anchor=(0.5, 0.8),
            bbox_transform=plt.gcf().transFigure)
 plt.title('speedup')
+
+plt.figure(3)
+for key in time.keys():
+    print [time[key][0] / (time[key][i] * threads[i]) for i in range(len(time[key]))]
+    for i in range(len(time[key])):
+        print time[key][0]
+        print time[key][i]
+        print threads[i]
+    plt.plot(threads, [time[key][0] / (time[key][i] * threads[i]) for i in range(len(time[key]))], label=key)
+plt.xlabel('processes')
+plt.ylabel('efficiency')
+plt.grid(True)
+plt.legend(bbox_to_anchor=(0.5, 0.8),
+           bbox_transform=plt.gcf().transFigure)
+plt.title('efficiency')
 
 plt.show()
