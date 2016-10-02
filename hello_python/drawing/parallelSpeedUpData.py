@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 ax = plt.subplot(111)
 
 threads = [1, 2, 4, 8, 16, 32]
-time = {"n=1000000000": [15.55, 7.82, 4.31, 2.21, 1.13, 0.6],
-        "n=2000000000": [31.09, 15.57, 8.71, 4.34, 2.19, 1.16],
-        "n=4000000000": [62.28, 31.11, 17.22, 8.62, 4.3, 2.23],
-        "n=8000000000": [124.3, 62.18, 34.41, 17.12, 8.58, 4.49]}
+time = {"n=1000000000": [16.79, 8.44, 4.26, 2.18, 1.11, 0.6],
+        "n=2000000000": [33.58, 16.88, 8.5, 4.28, 2.18, 1.14],
+        "n=4000000000": [66.96, 33.71, 16.95, 8.46, 4.29, 2.27],
+        "n=8000000000": [134.26, 67.48, 33.97, 16.99, 8.58, 4.42]}
 
 plt.figure(1)
 for key in time.keys():
@@ -33,7 +33,7 @@ for key in time.keys():
 plt.xlabel('processes')
 plt.ylabel('efficiency')
 plt.grid(True)
-plt.legend(bbox_to_anchor=(0.5, 0.8),
+plt.legend(bbox_to_anchor=(0.5, 0.5),
            bbox_transform=plt.gcf().transFigure)
 plt.title('efficiency')
 
