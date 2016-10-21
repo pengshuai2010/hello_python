@@ -27,6 +27,11 @@ plt.legend(bbox_to_anchor=(0.5, 0.8),
            bbox_transform=plt.gcf().transFigure)
 plt.title('speedup')
 
+print 'speedup'
+for key in time.keys():
+    a = [time[key][0] / t for t in time[key]]
+    print ["{0:0.2f}".format(i) for i in a]
+
 plt.figure(3)
 for key in time.keys():
     plt.plot(threads, [time[key][0] / (time[key][i] * threads[i]) for i in range(len(time[key]))], label=key)
@@ -36,8 +41,9 @@ plt.grid(True)
 plt.legend(bbox_to_anchor=(0.5, 0.5),
            bbox_transform=plt.gcf().transFigure)
 plt.title('efficiency')
+print 'efficiency'
 for key in time.keys():
-    a = [time[key][0] / t for t in time[key]]
+    a = [time[key][0] / (time[key][i] * threads[i]) for i in range(len(time[key]))]
     print ["{0:0.2f}".format(i) for i in a]
 
 plt.show()
