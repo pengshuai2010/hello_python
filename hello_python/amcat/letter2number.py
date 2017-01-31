@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 s = raw_input()
 out = ''
 for i in range(len(s)):

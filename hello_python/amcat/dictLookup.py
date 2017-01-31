@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # DETERMINE CFSFPNJKF TERMINTE
 s = raw_input()
 words = s.split()

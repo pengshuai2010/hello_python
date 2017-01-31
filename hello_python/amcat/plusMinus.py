@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # If BLACK is coded as DNCEM , then ORANGE is coded as QTCPIG
 # BLACK   DNCEM   ORANGE
 s = raw_input()
