@@ -51,11 +51,11 @@ if __name__ == '__main__':
     print 'dict look up:'
     print dictLookup(s) + '\n'
 
+    print 'plus minus:'
+    print plusMinus(s) + '\n'
+
     print 'diff:'
     print diff(s) + '\n'
 
     print 'letter 2 number:'
     print letter2number(s) + '\n'
-
-    print 'plus minus:'
-    print plusMinus(s) + '\n'
